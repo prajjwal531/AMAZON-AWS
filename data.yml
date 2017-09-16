@@ -1,0 +1,84 @@
+EC2-Instance:
+       Instance1:
+
+           ami-id: "ami-6e1a0117"
+           SecurityGroups:
+                   - ec2-lb1
+                   - ec2-sg1
+           instanceType: 't2.micro'
+           max-count: 1
+           min-count: 1
+           DeviceName: '/dev/sdh'
+           VirtualName: 'prajjwal'
+           Encrypted: False
+           SnapshotId: 'snap-02cc1e40d2e121683'
+           DeleteOnTermination: True
+           KeyName: 'prajjwal'
+           VolumeSize: 10
+           VolumeType: 'gp2'
+           ImageId: 'ami-6e1a0117'
+           re-create: "false"
+LoadBalancer:
+      Instance-names:
+          -
+          -
+
+
+SecurityGroups:
+      Group1:
+          name: 'ec2-lb1'
+          description: "This is a test"
+          mappings:
+           inBound_mapping:
+              mapping1:
+                IpProtocol: tcp
+                FromPort: 80
+                ToPort: 80
+                IpRanges: "0.0.0.0/0"
+              mapping2:
+                IpProtocol: tcp
+                FromPort: 8080
+                ToPort: 8080
+                IpRanges: "0.0.0.0/0"
+           outBound_mapping:
+              mapping1:
+                IpProtocol: tcp
+                FromPort: 80
+                ToPort: 80
+                IpRanges: "ec2-sg1"
+              mapping2:
+                IpProtocol: tcp
+                FromPort: 8080
+                ToPort: 8080
+                IpRanges: "ec2-sg1"
+      Group2:
+          name: 'ec2-sg1'
+          description: "This is a test"
+          mappings:
+           inBound_mapping:
+              mapping1:
+                IpProtocol: tcp
+                FromPort: 80
+                ToPort: 80
+                IpRanges: "ec2-lb1"
+              mapping2:
+                IpProtocol: tcp
+                FromPort: 8080
+                ToPort: 8080
+                IpRanges: "ec2-lb1"
+              mapping3:
+                IpProtocol: tcp
+                FromPort: 22
+                ToPort: 22
+                IpRanges: "162.119.128.141/32"
+           outBound_mapping:
+              mapping1:
+                IpProtocol: tcp
+                FromPort: 80
+                ToPort: 80
+                IpRanges: "0.0.0.0/0"
+              mapping2:
+                IpProtocol: tcp
+                FromPort: 8080
+                ToPort: 8080
+                IpRanges: "0.0.0.0/0"
