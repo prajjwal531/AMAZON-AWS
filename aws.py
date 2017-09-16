@@ -17,15 +17,19 @@ class AWSEC2:
         print self.yml.get('SecurityGroups')
 
 
-    def checkExistance(self, group):
+    def checkExistance(self, securitygroup):
         print "-------------Checking to see if Security Group exists------------------"
-        securityGroups=group.get('SecurityGroups')
+        #for group in securityGroup:
+
+        #securityGroups=securitygroup.get('SecurityGroups')
         groupInfo = []
-        for securityGroup in securityGroups:
+        for securityGroup in securitygroup:
+            securityGroupName= securitygroup.get(securityGroup).get('name')
+
             try:
                 a = self.ec2.describe_security_groups(
                     GroupNames=[
-                        securityGroup
+                        securityGroupName
                     ]
                 )
                 print a
@@ -33,25 +37,21 @@ class AWSEC2:
                     print "---------------- Group with name %s exists, ----------------" % (securityGroup)
                     continue
             except ClientError as e:
-                print "This Group Does not exist %s"%(securityGroup)
-                GroupId = self.createSecurityGroup(securityGroup)
+                print "This Group Does not exist %s"%(securityGroupName)
+                GroupId = self.createSecurityGroup(securityGroupName)
                 print GroupId
-                groupData=[securityGroup,GroupId]
+                groupData=[securityGroupName,GroupId]
                 groupInfo.append(groupData)
                 pass
         return groupInfo
 
     def createSecurityGroup(self,securityGroupName):
         print "-------This method is used to create Security Group---------------------"
-        securityGroup=self.yml.get('SecurityGroups')
-        for sGroups in securityGroup:
-            print sGroups,securityGroupName
-            if(securityGroup.get(sGroups).get('name')==securityGroupName):
-                response = self.ec2.create_security_group(GroupName=securityGroupName,
-                                                  Description=securityGroup.get(sGroups).get('description'),
-                                                  VpcId=self.VpcId)
-                security_group_id = response['GroupId']
-                return security_group_id
+        response = self.ec2.create_security_group(GroupName=securityGroupName,
+                                  Description="This is a security group for %s"%(securityGroupName),
+                                  VpcId=self.VpcId)
+        security_group_id = response['GroupId']
+        return security_group_id
 
     def getSecurityGroupId(self,groupName):
         r = self.ec2.describe_security_groups(
@@ -150,9 +150,8 @@ class AWSEC2:
                                 'DeviceName': Instances.get(instance).get('DeviceName'),
                                 'VirtualName': Instances.get(instance).get('VirtualName'),
                                 'Ebs': {
-                                    #'Encrypted': Instances.get(instance).get('Encrypted'),#False,
                                     'SnapshotId': Instances.get(instance).get('SnapshotId'),
-                                    'DeleteOnTermination': Instances.get(instance).get('DeleteOnTermination'),#True,
+                                    'DeleteOnTermination': Instances.get(instance).get('DeleteOnTermination'),
                                     'VolumeSize': Instances.get(instance).get('VolumeSize'),
                                     'VolumeType': Instances.get(instance).get('VolumeType')
                                 },
@@ -160,7 +159,7 @@ class AWSEC2:
                             },
                         ],
                         Placement={
-                            'AvailabilityZone': 'us-west-2b'
+                            'AvailabilityZone': Instances.get(instance).get('AvailabilityZone')
                         },
 
                         ImageId=Instances.get(instance).get('ami-id'),
@@ -175,6 +174,17 @@ class AWSEC2:
                     print (e)
             else:
                 print "--------- VM recreation is not needed at this point, checking the permission for other vm -----------"
+
+    def parseSecrity(self):
+        securityGroupInstance = self.yml.get('SecurityGroups')
+        #for d in securityGroupInstance:
+         #  print securityGroupInstance.get(d).get('name')
+        groupInfo=self.checkExistance(securityGroupInstance)
+        #print groupInfo
+        self.attachRules(groupInfo)
+        self.createInstance()
+
+
     def getData(self):
         response = self.ec2.describe_volumes()
         print response.get('Volumes')
@@ -184,5 +194,5 @@ class AWSEC2:
 
 if __name__ == '__main__':
     aws = AWSEC2()
-    aws.createInstance()
+    aws.parseSecrity()
 
