@@ -1,10 +1,9 @@
 EC2-Instance:
        Instance1:
-
+           Instance-Name: 'Instance1'
            ami-id: "ami-6e1a0117"
            SecurityGroups:
-                   - ec2-lb1
-                   - ec2-sg1
+                   - ec2-sg2
            instanceType: 't2.micro'
            max-count: 1
            min-count: 1
@@ -17,7 +16,8 @@ EC2-Instance:
            VolumeSize: 10
            VolumeType: 'gp2'
            ImageId: 'ami-6e1a0117'
-           re-create: "false"
+           re-create: false
+           AvailabilityZone: "us-west-2b"
 LoadBalancer:
       Instance-names:
           -
@@ -26,7 +26,7 @@ LoadBalancer:
 
 SecurityGroups:
       Group1:
-          name: 'ec2-lb1'
+          name: 'ec2-lb2'
           description: "This is a test"
           mappings:
            inBound_mapping:
@@ -45,14 +45,14 @@ SecurityGroups:
                 IpProtocol: tcp
                 FromPort: 80
                 ToPort: 80
-                IpRanges: "ec2-sg1"
+                IpRanges: "ec2-sg2"
               mapping2:
                 IpProtocol: tcp
                 FromPort: 8080
                 ToPort: 8080
-                IpRanges: "ec2-sg1"
+                IpRanges: "ec2-sg2"
       Group2:
-          name: 'ec2-sg1'
+          name: 'ec2-sg2'
           description: "This is a test"
           mappings:
            inBound_mapping:
@@ -60,12 +60,12 @@ SecurityGroups:
                 IpProtocol: tcp
                 FromPort: 80
                 ToPort: 80
-                IpRanges: "ec2-lb1"
+                IpRanges: "ec2-lb2"
               mapping2:
                 IpProtocol: tcp
                 FromPort: 8080
                 ToPort: 8080
-                IpRanges: "ec2-lb1"
+                IpRanges: "ec2-lb2"
               mapping3:
                 IpProtocol: tcp
                 FromPort: 22
