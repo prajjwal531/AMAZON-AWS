@@ -9,6 +9,7 @@ class AWSEC2:
     def __init__(self):
         self.ec2 = boto3.client('ec2')
         self.ec2_resource = boto3.resource('ec2')
+        self.elb= boto3.client('elb')
         response = self.ec2.describe_vpcs()
         d = response.get('Vpcs')
         self.VpcId = d[0].get('VpcId')
@@ -19,9 +20,6 @@ class AWSEC2:
 
     def checkExistance(self, securitygroup):
         print "-------------Checking to see if Security Group exists------------------"
-        #for group in securityGroup:
-
-        #securityGroups=securitygroup.get('SecurityGroups')
         groupInfo = []
         for securityGroup in securitygroup:
             securityGroupName= securitygroup.get(securityGroup).get('name')
@@ -138,6 +136,7 @@ class AWSEC2:
         print "======= This method is used to create instances======================="
         print self.ec2
         Instances = self.yml.get('EC2-Instance')
+        InstanceId=[]
         for instance in self.yml.get('EC2-Instance'):
             if (Instances.get(instance).get('re-create')):
                 group=self.checkExistance(Instances.get(instance))
@@ -174,25 +173,49 @@ class AWSEC2:
                     print (e)
             else:
                 print "--------- VM recreation is not needed at this point, checking the permission for other vm -----------"
+        return InstanceId
+
+    def checkIfLoadBalanceExists(self,balancerName):
+        try:
+            response = self.elb.describe_load_balancers(
+                LoadBalancerNames=[
+                    balancerName,
+                ], )
+            if (response is not None): return response
+        except ClientError as e:
+            print (e)
+            print "hello"
+            return False
+            pass
+    def createLoadBalance(self,instanceId):
+        loadbalancer=self.yml.get('LoadBalancer')
+
+        for balancer in loadbalancer:
+            status=self.checkIfLoadBalanceExists(loadbalancer[balancer]['LoadBalancerName'])
+            if(status is True or not None):
+                print "------ Load Balancer exists, Hence we are going to check if instance exist in load balancer or not   ------------"
+            else:
+                print "Creating the load balancer"
+
+
+
+
+        print "This mehtod"
 
     def parseSecrity(self):
         securityGroupInstance = self.yml.get('SecurityGroups')
-        #for d in securityGroupInstance:
-         #  print securityGroupInstance.get(d).get('name')
         groupInfo=self.checkExistance(securityGroupInstance)
-        #print groupInfo
         self.attachRules(groupInfo)
-        self.createInstance()
+        instanceId=self.createInstance()
+        if (len(instanceId)!=0):
+            print "We are going to create load balancer"
+        else:
+            print "no load"
 
-
-    def getData(self):
-        response = self.ec2.describe_volumes()
-        print response.get('Volumes')
-        for volums in response.get('Volumes'):
-            print volums
 
 
 if __name__ == '__main__':
     aws = AWSEC2()
-    aws.parseSecrity()
+    #aws.parseSecrity()
+    print aws.checkIfLoadBalanceExists('Apache')
 
