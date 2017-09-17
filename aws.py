@@ -186,15 +186,17 @@ class AWSEC2:
             if (response is not None): return response
         except ClientError as e:
             print (e)
-            print "hello"
+
             return False
             pass
-
-    #[['Instance1', 'i-0a279bcb1fb30ed50']]
-    #[['Instance2', 'i-0a9e1c2f39f14291c'], ['Instance1', 'i-00841aa121e7e0efb']]
-
-    def configureHealthcheck(self):
+    def configureHealthcheck(self,loadBalancerName):
         print 'this method is  used to configure health check'
+        response = self.elb.configure_health_check(
+            LoadBalancerName=loadBalancerName['LoadBalancerName'],
+            HealthCheck=loadBalancerName['HealthCheck']
+        )
+        print response
+
 
     def registerInstanceWithLoadBalancer(self,loadgroup):
         response = self.elb.register_instances_with_load_balancer(
@@ -253,7 +255,10 @@ class AWSEC2:
                                     SecurityGroups=securityGroupId,
                                 )
                                 loadgroup = [loadbalancer[balancer]['LoadBalancerName'], instanceId]
+                                print "---------- Registering Instance with Load Balance --------"
                                 self.registerInstanceWithLoadBalancer(loadgroup)
+                                print "---------- Configuring the health check -------------------"
+                                self.configureHealthcheck(loadbalancer[balancer])
                             except ClientError as e:
                                 print (e)
 
@@ -277,7 +282,7 @@ class AWSEC2:
 if __name__ == '__main__':
     aws = AWSEC2()
     #aws.parseSecrity()
-    d=[['Instance2', 'i-0a9e1c2f39f14291c'], ['Instance1', 'i-00841aa121e7e0efb']]
-    print aws.checkIfLoadBalanceExists('Apache').get('LoadBalancerDescriptions')[0].get('Instances')
+    #d=[['Instance2', 'i-0a9e1c2f39f14291c'], ['Instance1', 'i-00841aa121e7e0efb']]
+    #print aws.checkIfLoadBalanceExists('Apache')
     aws.parseSecrity()
     #aws.createLoadBalance(d)
