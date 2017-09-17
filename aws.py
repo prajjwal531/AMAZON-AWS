@@ -139,9 +139,6 @@ class AWSEC2:
         InstanceId=[]
         for instance in self.yml.get('EC2-Instance'):
             if (Instances.get(instance).get('re-create')):
-                group=self.checkExistance(Instances.get(instance))
-                self.attachRules(group)
-                print group
                 try:
                     data = self.ec2_resource.create_instances(
                     BlockDeviceMappings=[
@@ -168,7 +165,12 @@ class AWSEC2:
                         SecurityGroups=Instances.get(instance).get('SecurityGroups'),
                         KeyName= Instances.get(instance).get('KeyName')
                     )
-                    print data
+                    pt=data[0]
+                    print pt.id
+                    #pt.split("=")[1][1:-3]
+                   # print pt
+                    instance=[Instances.get(instance).get('Instance-Name'),pt.id]
+                    InstanceId.append(instance)
                 except ClientError as e:
                     print (e)
             else:
@@ -187,18 +189,61 @@ class AWSEC2:
             print "hello"
             return False
             pass
+
+    #[['Instance1', 'i-0a279bcb1fb30ed50']]
+    #[['Instance2', 'i-0a9e1c2f39f14291c'], ['Instance1', 'i-00841aa121e7e0efb']]
+
+    def registerInstanceWithLoadBalancer(self,loadgroup):
+        response = self.elb.register_instances_with_load_balancer(
+            LoadBalancerName=loadgroup[0],
+            Instances=[
+                {
+                    'InstanceId': loadgroup[1]
+                },
+            ]
+        )
+        print response
+
     def createLoadBalance(self,instanceId):
         loadbalancer=self.yml.get('LoadBalancer')
+        for instances in instanceId:
+            instanceName=instances[0]
+            instanceId=instances[1]
+            for balancer in loadbalancer:
+                InstanceNameInBalancer=loadbalancer[balancer]['Instance-names']
+                for ins in InstanceNameInBalancer:
+                    if (ins == instanceName):
+                        status=self.checkIfLoadBalanceExists(loadbalancer[balancer]['LoadBalancerName'])
+                        print status
+                        if(status):
+                            print "------ Load Balancer exists, Hence we are going to check if instance exist in load balancer or not   ------------"
+                            instances=status.get('LoadBalancerDescriptions')[0].get('Instances')
+                            for loadinstance in instances:
+                                if (instanceId == loadinstance.get('InstanceId')):
+                                    print "Instance with Instance Id %s is already attach to load balancer %s"%(instanceId,loadbalancer[balancer]['LoadBalancerName'])
+                                else:
+                                    print "attaching the load balancer"
+                                    loadgroup=[loadbalancer[balancer]['LoadBalancerName'],instanceId]
+                                    self.registerInstanceWithLoadBalancer(loadgroup)
+                        else:
+                            print "Creating the load balancer"
+                            d=[]
+                            for lnumber in loadbalancer[balancer]['Listeners']:
+                                d.append(loadbalancer[balancer]['Listeners'][lnumber])
+                                print d
 
-        for balancer in loadbalancer:
-            status=self.checkIfLoadBalanceExists(loadbalancer[balancer]['LoadBalancerName'])
-            if(status is True or not None):
-                print "------ Load Balancer exists, Hence we are going to check if instance exist in load balancer or not   ------------"
-            else:
-                print "Creating the load balancer"
-
-
-
+                            response = self.elb.create_load_balancer(
+                                LoadBalancerName=loadbalancer[balancer]['LoadBalancerName'],
+                                Listeners= d,
+                                AvailabilityZones=loadbalancer[balancer]['AvailabilityZone'],
+                                SecurityGroups=loadbalancer[balancer]['SecurityGroups'],
+                                Tags=[
+                                    {
+                                        'Key': 'name',
+                                        'Value': 'hello'
+                                    },
+                                ]
+                            )
 
         print "This mehtod"
 
@@ -207,15 +252,20 @@ class AWSEC2:
         groupInfo=self.checkExistance(securityGroupInstance)
         self.attachRules(groupInfo)
         instanceId=self.createInstance()
+        print instanceId
         if (len(instanceId)!=0):
             print "We are going to create load balancer"
+            self.createLoadBalance(instanceId)
         else:
             print "no load"
+            self.createLoadBalance(instanceId)
 
 
 
 if __name__ == '__main__':
     aws = AWSEC2()
     #aws.parseSecrity()
-    print aws.checkIfLoadBalanceExists('Apache')
-
+    d=[['Instance2', 'i-0a9e1c2f39f14291c'], ['Instance1', 'i-00841aa121e7e0efb']]
+    print aws.checkIfLoadBalanceExists('Apache').get('LoadBalancerDescriptions')[0].get('Instances')
+    #aws.parseSecrity()
+    aws.createLoadBalance(d)
