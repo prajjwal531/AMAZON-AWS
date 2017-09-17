@@ -16,14 +16,60 @@ EC2-Instance:
            VolumeSize: 10
            VolumeType: 'gp2'
            ImageId: 'ami-6e1a0117'
-           re-create: false
+           re-create: False
            AvailabilityZone: "us-west-2b"
+       Instance2:
+           Instance-Name: 'Instance2'
+           ami-id: "ami-6e1a0117"
+           SecurityGroups:
+                   - ec2-sg2
+           instanceType: 't2.micro'
+           max-count: 1
+           min-count: 1
+           DeviceName: '/dev/sdh'
+           VirtualName: 'prajjwal'
+           Encrypted: False
+           SnapshotId: 'snap-02cc1e40d2e121683'
+           DeleteOnTermination: True
+           KeyName: 'prajjwal'
+           VolumeSize: 10
+           VolumeType: 'gp2'
+           ImageId: 'ami-6e1a0117'
+           re-create: False
+           AvailabilityZone: "us-west-2c"
 LoadBalancer:
-      Instance-names:
-          -
-          -
+      Balancer1:
+        LoadBalancerName: "Apache1"
+        SecurityGroups:
+              - ec2-lb2
+        Tags:
+            - key:
+              value:
+        AvailabilityZone:
+            - us-west-2c
+            - us-west-2b
+        HealthCheck:
+             -  Target: 'string'
+             -  Interval: 123
+             -  Timeout: 123
+             -  UnhealthyThreshold: 123
+             -  HealthyThreshold: 123
 
-
+        Instance-names:
+            -  Instance1
+            -  Instance2
+        Listeners:
+            listener1:
+                Protocol: 'HTTP'
+                LoadBalancerPort: 80
+                InstanceProtocol: 'HTTP'
+                InstancePort: 8080
+            listener2:
+                Protocol: 'HTTPS'
+                LoadBalancerPort: 443
+                InstanceProtocol: 'HTTP'
+                InstancePort: 8080
+                SSLCertificateId': ""
 SecurityGroups:
       Group1:
           name: 'ec2-lb2'
