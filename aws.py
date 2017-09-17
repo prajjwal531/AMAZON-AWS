@@ -261,8 +261,7 @@ class AWSEC2:
                                 self.configureHealthcheck(loadbalancer[balancer])
                             except ClientError as e:
                                 print (e)
-
-        print "This mehtod"
+                                #69.181.81.151 / 32
 
     def parseSecrity(self):
         securityGroupInstance = self.yml.get('SecurityGroups')
