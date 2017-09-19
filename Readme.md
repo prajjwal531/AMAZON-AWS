@@ -1,8 +1,8 @@
 This Document can be used to set up local environment and know more about application process.
 perquisites: Anisble and boto3 should be installed
 
-<h1>1. Setup Local environment:</h1> This is the first step and required in order to get started. we need to run environmentsetup.sh and pass
-                            three arguments in given order below.
+#1. Setup Local environment:
+ This is the first step and required in order to get started. we need to run environmentsetup.sh and pass three arguments in given order below.
 1. aws_access_key_id
 2. aws_secret_access_key
 3. region
