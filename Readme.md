@@ -21,7 +21,7 @@ Note: This script does not support to create specific profile other then default
  3. Load Balancer: It serves as parent for all EC2 instances and distribute the traffic based on load.
  4. RDS DB (MySQL): This database is created to store transaction made by sample webapp.
 
-Specifications of data.yml:
+ <h2>Specifications of data.yml:</h2>
         1. EC2-Instance > InstanceX: This has all required parameters needed to create EC2-Instance. we can define as many instance we want to create.
                                  if we do not want to create same instance further, set up "re-create: False" in data.yml in that Instance section.
         2. SecurityGroups: This section is used to define security groups and their inBound_mapping and outBound_mapping.
@@ -39,13 +39,9 @@ instances. Same was achieved by defining this topology in listeners.
   LB        EC2
   8080 ===> 8080
   443 ====> 8080
-
 Each instance is deployed into different AvailabilityZone, this information is defined in data.yml. This could have been avoided using Autoscaling where it creates
 the instances in same region but it tries to create them in seperate zones. (This could have been an enhancement to this application)
-
 A custom build image is used in this solution that has java and tomcat installed in it and same ami-id is being used to create multiple instances.
 Once the environments and LoadBalancer is up and working and tested. we can deploy the webapp to tomcat and restart it.
-
 we will use ansible dynamic inventory to do deployments to ec2 instances. we have identified these EC2-Instance as webserver and used specific keyname to configure them. Hence while running ansible we will use "key_'keyname'" to identify all webserver for deployment.
-
 Once the war file is deployed and tomcat restarted it can be accessed via both http and https port using LoadBalancer DNS.
