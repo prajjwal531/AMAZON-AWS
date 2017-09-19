@@ -20,7 +20,7 @@ EOF
 chmod u+rw *
 
 }
-export(){
+exportData(){
           echo "--------------exporting hosts------------------"
 
             export ANSIBLE_HOSTS=/etc/ansible/ec2.py
@@ -61,4 +61,4 @@ if [ -d ~/.aws ];then
 fi
 
 setupEc2DynamicInventory
-export $1 $2
+exportData $1 $2
