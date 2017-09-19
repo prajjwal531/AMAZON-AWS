@@ -47,6 +47,7 @@ if we do not want to create same instance further, set up "re-create: False" in 
 
 ## Run Aws.py
   We need to make sure that data.yml and aws.py are in same folder when aws.py is executed. Once run it will create new ec2 instances, attach security groups to it and creates a load balancer.
+
   ## Working flow
 
   Load Balancer is consumer facing and redirects incoming traffic. It takes traffic on both secure and non secure port and transmit it to non secure port to ec2
@@ -74,7 +75,7 @@ if we do not want to create same instance further, set up "re-create: False" in 
 To start the deployment we have already built the war file and setup db information in the code to access rds db.
 after checking sucessfully testing dynamic inventory setup, we can run this playbook using command give below.
 The link to setup dynamic inventory in your local machine can be found [here](https://aws.amazon.com/blogs/apn/getting-started-with-ansible-and-dynamic-amazon-ec2-inventory-management/).
-Also, most of this setup are being taken care by "environmentsetup.sh" script that we have run Initially.
+Also, most of this setup are being taken care by "environmentsetup.sh" script that we have run initially.
 
  #### ansible-playbook deployment.yml
 
