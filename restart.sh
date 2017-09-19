@@ -1,3 +1,4 @@
 echo "Restarting the tomcat"
-~/apache/bin/shutdown.sh
-~/apache/bin/startup.sh
+chmod +x shutdown* startup*
+~/apache-tomcat-7.0.81/bin/shutdown.sh
+~/apache-tomcat-7.0.81/bin/startup.sh

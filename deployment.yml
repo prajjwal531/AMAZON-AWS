@@ -1,16 +1,19 @@
 ---
-  - hosts: key_prajjwalkey
+  - hosts: key_prajjwalkey # Please change this key based on what you have used to create instances.
     user: ubuntu
     sudo: yes
     tasks:
       - name: Update all packages to latest
         copy:
             src: "{{ item }}"
-            dest: "~/apache/webapps"
+            dest: "~/apache-tomcat-7.0.81/webapps"
         with_items:
              - transaction.war
              - restart.sh
+      - name: changing the permission
+        shell: "chmod +x ~/apache-tomcat-7.0.81/webapps/restart.sh"
+
       - name: Restart tomcat
-        shell: "~/apache/webapps/restart.sh"
+        shell: "~/apache-tomcat-7.0.81/webapps/restart.sh"
         agrs:
-          chdir: ~/apache/webapps
+          chdir: ~/apache-tomcat-7.0.81/webapps
