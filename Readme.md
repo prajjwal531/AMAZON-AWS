@@ -20,14 +20,12 @@ Note: This script does not support to create specific profile other then default
  2. EC2 Instance: These are the environments being created.
  3. Load Balancer: It serves as parent for all EC2 instances and distribute the traffic based on load.
 
-
-      2.1  Specifications of data.yml:
-
-       EC2-Instance>InstanceX: This has all required parameters needed to create EC2-Instance. we can define as many instance we want to create.
+Specifications of data.yml:
+        EC2-Instance > InstanceX: This has all required parameters needed to create EC2-Instance. we can define as many instance we want to create.
                                  if we do not want to create same instance further, set up "re-create: False" in data.yml in that Instance section.
-
         SecurityGroups: This section is used to define security groups and their inBound_mapping and outBound_mapping.
-
         LoadBalancer: This section is used to create load balance and it registers the instances. Also this section specifies the Listeners
-                      that this LoadBalancer will use to listen and redirect.s
-                      Instance-name should be listed in this section in-order to register it with load balancer.
+                      that this LoadBalancer will use to listen and redirect. Instance-name should be listed in this section in-order to register it with load balancer. if listenr is listening to https port, we need to specify SSLCertificateId as well in data.yml.
+
+
+Run Aws.py: We need to make sure that data.yml and aws.py are in same folder when aws.py is executed. Once run it will create new ec2 instances, attach security groups to it and creates a load balancer.
