@@ -1,7 +1,7 @@
 This Document can be used to set up local environment and know more about application process.
 perquisites: Anisble and boto3 should be installed
 
-1. Setup Local environment: This is the first step and required in order to get started. we need to run environmentsetup.sh and pass
+<h1>1. Setup Local environment:</h1> This is the first step and required in order to get started. we need to run environmentsetup.sh and pass
                             three arguments in given order below.
 1. aws_access_key_id
 2. aws_secret_access_key
@@ -13,7 +13,7 @@ This script will set up a default profile for boto to use.
 
 Note: This script does not support to create specific profile other then default. This feature can be added as an enhancement.
 
-2. Setting up AWS instance:  aws.py is the script that creates all resources to AWS. aws.py reads the configurations from data.yml and creates following
+<h1>2. Setting up AWS instance:</h1>  aws.py is the script that creates all resources to AWS. aws.py reads the configurations from data.yml and creates following
                              resources.
 
  1. SecurityGroups: This enables incoming and outgoing traffic to and from resources.
