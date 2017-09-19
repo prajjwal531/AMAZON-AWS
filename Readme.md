@@ -36,9 +36,11 @@ Note: This script does not support to create specific profile other then default
 
 Load Balancer is consumer facing and redirects incoming traffic. It takes traffic on both secure and non secure port and transmit it to non secure port to ec2
 instances. Same was achieved by defining this topology in listeners.
+
   LB        EC2
   8080 ===> 8080
   443 ====> 8080
+
 Each instance is deployed into different AvailabilityZone, this information is defined in data.yml.
 This could have been avoided using Autoscaling where it creates the instances in same region but it tries to create them in seperate zones. (This could have been an enhancement to this application)
 
