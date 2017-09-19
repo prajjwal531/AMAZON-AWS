@@ -50,13 +50,12 @@ setupEc2DynamicInventory(){
 
 
 }
-
 if [ -d ~/.aws ];then
     echo "seeting up the environment"
     setup $1 $2 $3
  else
      echo "direcorty is not there hence creating it"
-     mkdir -R ~/.aws
+     mkdir ~/.aws
      setup $1 $2 $3
 fi
 
