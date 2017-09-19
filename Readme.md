@@ -60,8 +60,19 @@ if we do not want to create same instance further, set up "re-create: False" in 
   Each instance is deployed into different AvailabilityZone, this information is defined in data.yml.
   This could have been avoided using Autoscaling where it creates the instances in same region but it tries to create them in seperate zones. (This could have been an enhancement to this application)
 
-  A custom build image is used in this solution that has java and tomcat installed in it and same ami-id is being used to create multiple instances.
-  Once the environments and LoadBalancer is up and working and tested. we can deploy the webapp to tomcat and restart it.
+  A custom build image is used in this solution and it has java and tomcat installed. Same ami-id is being used to create multiple instances.
+  After sucessfull resource creation in AWS, we can start deploying code to both tomcat instances.
 
   we will use ansible dynamic inventory to do deployments to ec2 instances. we have identified these EC2-Instance as webserver and used specific keyname to configure them. Hence while running ansible we will use "key_'keyname'" to identify all webserver for deployment.
   Once the war file is deployed and tomcat restarted it can be accessed via both http and https port using LoadBalancer DNS.
+
+  ### Note:
+           Since this solution reads the data from data.yml, any information such as keyname, ami-id, SSLCertificateId should be replaced based on the instance is being used.
+
+## Deployment info
+
+There is a Java based webservice deployed on tomcat instances and it can be access over this Id.
+
+"https://apache2-2071546822.us-west-2.elb.amazonaws.com/transactions/webapi/accounts/243406451234"
+
+where it is getting the data from rds db based on account id.
