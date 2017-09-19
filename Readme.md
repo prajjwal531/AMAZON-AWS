@@ -16,19 +16,18 @@ perquisites: Anisble and boto3 should be installed
 2. Setting up AWS instance:  aws.py is the script that creates all resources to AWS. aws.py reads the configurations from data.yml and creates following
                              resources.
 
-                             1. SecurityGroups: This enables incoming and outgoing traffic to and from resources.
-                             2. EC2 Instance: These are the environments being created.
-                             3. Load Balancer: It serves as parent for all EC2 instances and distribute the traffic based on load.
+                   1. SecurityGroups: This enables incoming and outgoing traffic to and from resources.
+                   2. EC2 Instance: These are the environments being created.
+                   3. Load Balancer: It serves as parent for all EC2 instances and distribute the traffic based on load.
 
 
       2.1  Specifications of data.yml:
 
-                             EC2-Instance>InstanceX: This has all required parameters needed to create EC2-Instance. we can define as many instance we want to create.
-                                                     if we do not want to create same instance further, set up "re-create: False" in data.yml in that Instance section.
+                 EC2-Instance>InstanceX: This has all required parameters needed to create EC2-Instance. we can define as many instance we want to create.
+                                         if we do not want to create same instance further, set up "re-create: False" in data.yml in that Instance section.
 
-                            SecurityGroups: This section is used to define security groups and their inBound_mapping and outBound_mapping.
+                SecurityGroups: This section is used to define security groups and their inBound_mapping and outBound_mapping.
 
-                            LoadBalancer: This section is used to create load balance and it registers the instances. Also this section specifies the Listeners
-                                          that this LoadBalancer will use to listen and redirect.
-
-                                          Instance-name should be listed in this section in-order to register it with load balancer.
+                LoadBalancer: This section is used to create load balance and it registers the instances. Also this section specifies the Listeners
+                              that this LoadBalancer will use to listen and redirect.s
+                              Instance-name should be listed in this section in-order to register it with load balancer.
