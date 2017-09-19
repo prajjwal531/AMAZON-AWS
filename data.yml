@@ -116,7 +116,7 @@ SecurityGroups:
                 IpProtocol: tcp
                 FromPort: 22
                 ToPort: 22
-                IpRanges: "162.119.128.141/32"
+                IpRanges: "0.0.0.0/0"
            outBound_mapping:
               mapping1:
                 IpProtocol: tcp
