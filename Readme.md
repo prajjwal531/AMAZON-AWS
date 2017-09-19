@@ -39,6 +39,7 @@ instances. Same was achieved by defining this topology in listeners.
 
   LB        EC2
   8080 ===> 8080
+
   443 ====> 8080
 
 Each instance is deployed into different AvailabilityZone, this information is defined in data.yml.
