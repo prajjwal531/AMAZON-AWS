@@ -19,6 +19,7 @@ Note: This script does not support to create specific profile other then default
  1. SecurityGroups: This enables incoming and outgoing traffic to and from resources.
  2. EC2 Instance: These are the environments being created.
  3. Load Balancer: It serves as parent for all EC2 instances and distribute the traffic based on load.
+ 4. RDS DB (MySQL): This database is created to store transaction made by sample webapp.
 
 Specifications of data.yml:
         EC2-Instance > InstanceX: This has all required parameters needed to create EC2-Instance. we can define as many instance we want to create.
@@ -28,6 +29,12 @@ Specifications of data.yml:
                       that this LoadBalancer will use to listen and redirect. Instance-name should be listed in this section in-order to register it with load balancer. if listenr is listening to https port, we need to specify SSLCertificateId as well in data.yml.
 
 
-<h2>Run Aws.py</h2>: We need to make sure that data.yml and aws.py are in same folder when aws.py is executed. Once run it will create new ec2 instances, attach security groups to it and creates a load balancer.
+<h2>Run Aws.py:</h2> We need to make sure that data.yml and aws.py are in same folder when aws.py is executed. Once run it will create new ec2 instances, attach security groups to it and creates a load balancer.
 
 <h1>Working flow</h1>
+
+Load Balancer is consumer facing and redirects incoming traffic. It takes traffic on both secure and non secure port and transmit it to non secure port to ec2
+instances. Same was achieved by defining this topology in listeners.
+  LB        EC2
+  8080 ===> 8080
+  443 ====> 8080
