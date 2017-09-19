@@ -23,7 +23,7 @@ Note: This script does not support to create specific profile other then default
 
  <h2>Specifications of data.yml:</h2>
         1. EC2-Instance > InstanceX: This has all required parameters needed to create EC2-Instance. we can define as many instance we want to create.
-                                 if we do not want to create same instance further, set up "re-create: False" in data.yml in that Instance section.
+        if we do not want to create same instance further, set up "re-create: False" in data.yml in that Instance section.
         2. SecurityGroups: This section is used to define security groups and their inBound_mapping and outBound_mapping.
         3. LoadBalancer: This section is used to create load balance and it registers the instances. Also this section specifies the Listeners
                       that this LoadBalancer will use to listen and redirect. Instance-name should be listed in this section in-order to register it with load balancer. if listenr is listening to https port, we need to specify SSLCertificateId as well in data.yml.
