@@ -22,11 +22,12 @@ Note: This script does not support to create specific profile other then default
  4. RDS DB (MySQL): This database is created to store transaction made by sample webapp.
 
 Specifications of data.yml:
-        EC2-Instance > InstanceX: This has all required parameters needed to create EC2-Instance. we can define as many instance we want to create.
+        1. EC2-Instance > InstanceX: This has all required parameters needed to create EC2-Instance. we can define as many instance we want to create.
                                  if we do not want to create same instance further, set up "re-create: False" in data.yml in that Instance section.
-        SecurityGroups: This section is used to define security groups and their inBound_mapping and outBound_mapping.
-        LoadBalancer: This section is used to create load balance and it registers the instances. Also this section specifies the Listeners
+        2. SecurityGroups: This section is used to define security groups and their inBound_mapping and outBound_mapping.
+        3. LoadBalancer: This section is used to create load balance and it registers the instances. Also this section specifies the Listeners
                       that this LoadBalancer will use to listen and redirect. Instance-name should be listed in this section in-order to register it with load balancer. if listenr is listening to https port, we need to specify SSLCertificateId as well in data.yml.
+        4. RDS: This section is used to define RDS information.
 
 
 <h2>Run Aws.py:</h2> We need to make sure that data.yml and aws.py are in same folder when aws.py is executed. Once run it will create new ec2 instances, attach security groups to it and creates a load balancer.
@@ -38,3 +39,13 @@ instances. Same was achieved by defining this topology in listeners.
   LB        EC2
   8080 ===> 8080
   443 ====> 8080
+
+Each instance is deployed into different AvailabilityZone, this information is defined in data.yml. This could have been avoided using Autoscaling where it creates
+the instances in same region but it tries to create them in seperate zones. (This could have been an enhancement to this application)
+
+A custom build image is used in this solution that has java and tomcat installed in it and same ami-id is being used to create multiple instances.
+Once the environments and LoadBalancer is up and working and tested. we can deploy the webapp to tomcat and restart it.
+
+we will use ansible dynamic inventory to do deployments to ec2 instances. we have identified these EC2-Instance as webserver and used specific keyname to configure them. Hence while running ansible we will use "key_'keyname'" to identify all webserver for deployment.
+
+Once the war file is deployed and tomcat restarted it can be accessed via both http and https port using LoadBalancer DNS.
