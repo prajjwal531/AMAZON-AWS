@@ -47,3 +47,11 @@ Once the environments and LoadBalancer is up and working and tested. we can depl
 
 we will use ansible dynamic inventory to do deployments to ec2 instances. we have identified these EC2-Instance as webserver and used specific keyname to configure them. Hence while running ansible we will use "key_'keyname'" to identify all webserver for deployment.
 Once the war file is deployed and tomcat restarted it can be accessed via both http and https port using LoadBalancer DNS.
+
+<h1> Deployment info </h1>
+
+There is a Java based webservice deployed on tomcat instances and it can be access over this Id.
+
+"https://apache2-2071546822.us-west-2.elb.amazonaws.com/transactions/webapi/accounts/243406451234"
+
+where it is getting the data from rds db based on account id.
