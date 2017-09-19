@@ -13,15 +13,14 @@ This script will set up a default profile for boto to use.
 
 Note: This script does not support to create specific profile other then default. This feature can be added as an enhancement.
 
-<h1>2. Setting up AWS instance:</h1>  aws.py is the script that creates all resources to AWS. aws.py reads the configurations from data.yml and creates following
-                             resources.
+# 2. Setting up AWS instance:  aws.py is the script that creates all resources to AWS. aws.py reads the configurations from data.yml and creates following resources.
 
  1. SecurityGroups: This enables incoming and outgoing traffic to and from resources.
  2. EC2 Instance: These are the environments being created.
  3. Load Balancer: It serves as parent for all EC2 instances and distribute the traffic based on load.
  4. RDS DB (MySQL): This database is created to store transaction made by sample webapp.
 
- <h2>Specifications of data.yml:</h2>
+ ## Specifications of data.yml:
         1. EC2-Instance > InstanceX: This has all required parameters needed to create EC2-Instance. we can define as many instance we want to create.
         if we do not want to create same instance further, set up "re-create: False" in data.yml in that Instance section.
         2. SecurityGroups: This section is used to define security groups and their inBound_mapping and outBound_mapping.
