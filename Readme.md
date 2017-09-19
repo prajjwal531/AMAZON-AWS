@@ -1,7 +1,7 @@
 This Document can be used to set up local environment and know more about application process.
 perquisites: Anisble and boto3 should be installed
 
-# 1. Setup Local environment:
+## 1. Setup Local environment:
  This is the first step and required in order to get started. we need to run environmentsetup.sh and pass three arguments in given order below.
 1. aws_access_key_id
 2. aws_secret_access_key
@@ -22,7 +22,7 @@ Note: This script does not support to create specific profile other then default
  3. Load Balancer: It serves as parent for all EC2 instances and distribute the traffic based on load.
  4. RDS DB (MySQL): This database is created to store transaction made by sample webapp.
 
- Specifications of data.yml
+## 3. Specifications of data.yml
 
         1. EC2-Instance > InstanceX: This has all required parameters needed to create EC2-Instance. we can define as many instance we want to create.
         if we do not want to create same instance further, set up "re-create: False" in data.yml in that Instance section.
@@ -34,9 +34,10 @@ Note: This script does not support to create specific profile other then default
         4. RDS: This section is used to define RDS information. (RDS was created manually)
 
 
-<h2>Run Aws.py:</h2> We need to make sure that data.yml and aws.py are in same folder when aws.py is executed. Once run it will create new ec2 instances, attach security groups to it and creates a load balancer.
+## Run Aws.py
+ We need to make sure that data.yml and aws.py are in same folder when aws.py is executed. Once run it will create new ec2 instances, attach security groups to it and creates a load balancer.
 
-<h1>Working flow</h1>
+## Working flow
 
 Load Balancer is consumer facing and redirects incoming traffic. It takes traffic on both secure and non secure port and transmit it to non secure port to ec2
 instances. Same was achieved by defining this topology in listeners.
@@ -55,7 +56,7 @@ Once the environments and LoadBalancer is up and working and tested. we can depl
 we will use ansible dynamic inventory to do deployments to ec2 instances. we have identified these EC2-Instance as webserver and used specific keyname to configure them. Hence while running ansible we will use "key_'keyname'" to identify all webserver for deployment.
 Once the war file is deployed and tomcat restarted it can be accessed via both http and https port using LoadBalancer DNS.
 
-<h1> Deployment info </h1>
+## Deployment info
 
 There is a Java based webservice deployed on tomcat instances and it can be access over this Id.
 
