@@ -22,12 +22,13 @@ This is the first step and required in order to get started. we need to run envi
 2. aws_secret_access_key
 3. region
 
-Example:  bash environmentsetup.sh 'aws_access_key_id' 'aws_secret_access_key' 'region'
+#### Example:  bash environmentsetup.sh 'aws_access_key_id' 'aws_secret_access_key' 'region'
 
 This script will set up a default profile for boto to use.
 
-Note: This script does not support to create specific profile other then default. This feature can be added as an enhancement
-### Installing
+#### Note: This Script creates a default profile. creating a custom profile can be added as an extension.
+
+## Installing
 
 A step by step series of examples that tell you have to get a development env running
 
