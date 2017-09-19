@@ -1,0 +1,16 @@
+---
+    hosts: key_prajjwalkey
+    user: ubuntu
+    sudo: yes
+    tasks:
+      - name: Update all packages to latest
+        copy:
+            src: "{{ item }}"
+            dest: "~/apache/webapps"
+        with_items:
+             - transaction.war
+             - restart.sh
+      - name: Restart tomcat
+        shell: "~/apache/webapps/restart.sh"
+        agrs:
+          chdir: ~/apache/webapps
