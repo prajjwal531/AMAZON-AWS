@@ -33,7 +33,7 @@ setupEc2DynamicInventory(){
     echo "-----------------Setting up ec2 dynamic inventory----------------------"
     if [ -d /etc/ansible ]; then
         cd /etc/ansible
-        if [ -f '/etc/ansible/ec2.py' ] && [ -f '/ec2/ansible/ec2.ini' ]; then
+        if [ -f /etc/ansible/ec2.py ] && [ -f /ec2/ansible/ec2.ini ]; then
             echo "------------setting up inventory------------"
 
          else
