@@ -1,5 +1,5 @@
 ---
-    hosts: key_prajjwalkey
+  - hosts: key_prajjwalkey
     user: ubuntu
     sudo: yes
     tasks:
