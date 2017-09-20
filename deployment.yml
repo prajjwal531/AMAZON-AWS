@@ -6,14 +6,16 @@
       - name: Update all packages to latest
         copy:
             src: "{{ item }}"
-            dest: "~/apache-tomcat-7.0.81/webapps"
+            dest: "/home/ubuntu/apache-tomcat-7.0.81/webapps"
         with_items:
-             - transaction.war
+             - transactions.war
              - restart.sh
+        notify: Restarting tomcat
       - name: changing the permission
-        shell: "chmod +x ~/apache-tomcat-7.0.81/webapps/restart.sh"
-
-      - name: Restart tomcat
-        shell: "~/apache-tomcat-7.0.81/webapps/restart.sh"
-        agrs:
-          chdir: ~/apache-tomcat-7.0.81/webapps
+        shell: "chmod +x /home/ubuntu/apache-tomcat-7.0.81/webapps/restart.sh"
+    handlers:    
+      - name: Restarting tomcat
+        shell: "/home/ubuntu/apache-tomcat-7.0.81/webapps/restart.sh"
+        args:
+            chdir: /home/ubuntu/apache-tomcat-7.0.81/webapps
+      
