@@ -10,20 +10,15 @@ class AWSEC2:
         self.ec2 = boto3.client('ec2')
         self.ec2_resource = boto3.resource('ec2')
         self.elb= boto3.client('elb')
-        response = self.ec2.describe_vpcs()
-        d = response.get('Vpcs')
-        self.VpcId = d[0].get('VpcId')
         f=open('data.yml')
         self.yml=yaml.load(f)
-        print self.yml.get('SecurityGroups')
-
 
     def checkExistance(self, securitygroup):
         print "-------------Checking to see if Security Group exists------------------"
         groupInfo = []
         for securityGroup in securitygroup:
             securityGroupName= securitygroup.get(securityGroup).get('name')
-
+            #print self.VpcId
             try:
                 a = self.ec2.describe_security_groups(
                     GroupNames=[
@@ -46,8 +41,8 @@ class AWSEC2:
     def createSecurityGroup(self,securityGroupName):
         print "-------This method is used to create Security Group---------------------"
         response = self.ec2.create_security_group(GroupName=securityGroupName,
-                                  Description="This is a security group for %s"%(securityGroupName),
-                                  VpcId=self.VpcId)
+                                  Description="This is a security group for %s"%(securityGroupName))
+                                  #VpcId=self.VpcId)
         security_group_id = response['GroupId']
         return security_group_id
 
@@ -280,8 +275,4 @@ class AWSEC2:
 
 if __name__ == '__main__':
     aws = AWSEC2()
-    #aws.parseSecrity()
-    #d=[['Instance2', 'i-0a9e1c2f39f14291c'], ['Instance1', 'i-00841aa121e7e0efb']]
-    #print aws.checkIfLoadBalanceExists('Apache')
     aws.parseSecrity()
-    #aws.createLoadBalance(d)

@@ -11,11 +11,12 @@
              - transactions.war
              - restart.sh
         notify: Restarting tomcat
+
       - name: changing the permission
         shell: "chmod +x /home/ubuntu/apache-tomcat-7.0.81/webapps/restart.sh"
     handlers:    
-      - name: Restarting tomcat
-        shell: "/home/ubuntu/apache-tomcat-7.0.81/webapps/restart.sh"
-        args:
-            chdir: /home/ubuntu/apache-tomcat-7.0.81/webapps
+        - name: Restarting tomcat
+          shell: "/home/ubuntu/apache-tomcat-7.0.81/webapps/restart.sh"
+          args:
+              chdir: /home/ubuntu/apache-tomcat-7.0.81/webapps
       

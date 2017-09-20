@@ -1,26 +1,26 @@
 EC2-Instance:
        Instance1:
            Instance-Name: 'Instance1'
-           ami-id: "ami-6e1a0117"
+           ami-id: "ami-d47182ac"
            SecurityGroups:
                    - ec2-sg2
            instanceType: 't2.micro'
            max-count: 1
            min-count: 1
            DeviceName: '/dev/sdh'
-           VirtualName: 'prajjwal'
+           VirtualName: 'prajjwalkey'
            Encrypted: False
            SnapshotId: 'snap-02cc1e40d2e121683'
            DeleteOnTermination: True
-           KeyName: 'prajjwal'
+           KeyName: 'prajjwalkey'
            VolumeSize: 10
            VolumeType: 'gp2'
            ImageId: 'ami-6e1a0117'
-           re-create: False
-           AvailabilityZone: "us-west-2b"
+           re-create: True
+           AvailabilityZone: "us-west-2a"
        Instance2:
            Instance-Name: 'Instance2'
-           ami-id: "ami-6e1a0117"
+           ami-id: "ami-d47182ac"
            SecurityGroups:
                    - ec2-sg2
            instanceType: 't2.micro'
@@ -31,15 +31,15 @@ EC2-Instance:
            Encrypted: False
            SnapshotId: 'snap-02cc1e40d2e121683'
            DeleteOnTermination: True
-           KeyName: 'prajjwal'
+           KeyName: 'prajjwalkey'
            VolumeSize: 10
            VolumeType: 'gp2'
            ImageId: 'ami-6e1a0117'
-           re-create: False
+           re-create: True
            AvailabilityZone: "us-west-2c"
 LoadBalancer:
       Balancer1:
-        LoadBalancerName: "Apache1"
+        LoadBalancerName: "Apache2"
         SecurityGroups:
               - ec2-lb2
         Tags:
@@ -48,12 +48,13 @@ LoadBalancer:
         AvailabilityZone:
             - us-west-2c
             - us-west-2b
+            - us-west-2a
         HealthCheck:
-             -  Target: 'string'
-             -  Interval: 123
-             -  Timeout: 123
-             -  UnhealthyThreshold: 123
-             -  HealthyThreshold: 123
+               Target: 'HTTP:80/index.html'
+               Interval: 30
+               Timeout: 5
+               UnhealthyThreshold: 10
+               HealthyThreshold: 10
 
         Instance-names:
             -  Instance1
@@ -69,10 +70,10 @@ LoadBalancer:
                 LoadBalancerPort: 443
                 InstanceProtocol: 'HTTP'
                 InstancePort: 8080
-                SSLCertificateId': ""
+                SSLCertificateId: "arn:aws:acm:us-west-2:026415828610:certificate/21951ee1-c251-44ab-b182-2db75dca1702"
 SecurityGroups:
       Group1:
-          name: 'ec2-lb2'
+          name: 'ec2-lb3'
           description: "This is a test"
           mappings:
            inBound_mapping:
@@ -82,6 +83,11 @@ SecurityGroups:
                 ToPort: 80
                 IpRanges: "0.0.0.0/0"
               mapping2:
+                IpProtocol: tcp
+                FromPort: 443
+                ToPort: 443
+                IpRanges: "0.0.0.0/0"
+              mapping3:
                 IpProtocol: tcp
                 FromPort: 8080
                 ToPort: 8080
@@ -91,14 +97,14 @@ SecurityGroups:
                 IpProtocol: tcp
                 FromPort: 80
                 ToPort: 80
-                IpRanges: "ec2-sg2"
+                IpRanges: "ec2-sg3"
               mapping2:
                 IpProtocol: tcp
                 FromPort: 8080
                 ToPort: 8080
-                IpRanges: "ec2-sg2"
+                IpRanges: "ec2-sg3"
       Group2:
-          name: 'ec2-sg2'
+          name: 'ec2-sg3'
           description: "This is a test"
           mappings:
            inBound_mapping:
@@ -106,12 +112,12 @@ SecurityGroups:
                 IpProtocol: tcp
                 FromPort: 80
                 ToPort: 80
-                IpRanges: "ec2-lb2"
+                IpRanges: "ec2-lb3"
               mapping2:
                 IpProtocol: tcp
                 FromPort: 8080
                 ToPort: 8080
-                IpRanges: "ec2-lb2"
+                IpRanges: "ec2-lb3"
               mapping3:
                 IpProtocol: tcp
                 FromPort: 22

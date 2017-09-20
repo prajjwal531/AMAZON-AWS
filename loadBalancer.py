@@ -35,9 +35,9 @@ print ec2.vpcs.all()
 for vpc in ec2.vpcs.all():
     for subnet in vpc.subnets.all():
         print vpc,subnet
-sys.exit(1)
+#sys.exit(1)
 
-sys.exit()
+ec2 = boto3.client('elb')
 response = ec2.create_load_balancer(
     LoadBalancerName='apache3',
     Listeners=[
@@ -61,21 +61,4 @@ response = ec2.create_load_balancer(
         },
     ]
 )
-response = client.register_instances_with_load_balancer(
-    LoadBalancerName='string',
-    Instances=[
-        {
-            'InstanceId': 'string'
-        },
-    ]
-)
-response = client.configure_health_check(
-    LoadBalancerName='string',
-    HealthCheck={
-        'Target': 'string',
-        'Interval': 123,
-        'Timeout': 123,
-        'UnhealthyThreshold': 123,
-        'HealthyThreshold': 123
-    }
-)
+
