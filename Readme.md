@@ -73,7 +73,7 @@ if we do not want to create same instance further, set up "re-create: False" in 
 ## Deployment info
 
 To start the deployment we have already built the war file and setup db information in the code to access rds db.
-after checking sucessfully testing dynamic inventory setup, we can run this playbook using command give below.
+after sucessfully testing dynamic inventory setup, we can run deployment playbook using command give below.
 The link to setup dynamic inventory in your local machine can be found [here](https://aws.amazon.com/blogs/apn/getting-started-with-ansible-and-dynamic-amazon-ec2-inventory-management/).
 Also, most of this setup are being taken care by "environmentsetup.sh" script that we have run initially.
 
