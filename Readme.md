@@ -8,7 +8,7 @@ These instructions will allow you to spin up new instances in AWS console and wi
 
 ### Prerequisites
 
-In-order for this application to work, we need boto3 and ansible installed on client machine.
+In-order for this application to work, we need boto3, ansible and python yaml installed on client machine.
 you can install them by using following commands.
 
 ```
